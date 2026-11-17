@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dicas Neon | Sua Central de Orientações</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --neon-green: #39FF14;
+      --neon-pink: #FF2E9A;
+      --neon-cyan: #00F0FF;
+      --bg-dark: #0A0A0F;
+      --bg-card: #12121A;
+      --bg-surface: #1A1A2E;
+      --text-primary: #FFFFFF;
+      --text-secondary: #B0B0C0;
+      --glow-green: 0 0 10px #39FF14, 0 0 20px #39FF14, 0 0 40px #39FF1480;
+      --glow-pink: 0 0 10px #FF2E9A, 0 0 20px #FF2E9A, 0 0 40px #FF2E9A80;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(ellipse at 20% 20%, rgba(57, 255, 20, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(255, 46, 154, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(0, 240, 255, 0.03) 0%, transparent 70%);
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      padding: 2.5rem 1.5rem 1.5rem;
+      position: relative;
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: 3px;
+      background: linear-gradient(90deg, var(--neon-green), var(--neon-cyan), var(--neon-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 30px rgba(57, 255, 20, 0.3);
+      margin-bottom: 0.5rem;
+    }
+
+    .tagline {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      letter-spacing: 1px;
+    }
+
+    /* Main container */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem 4rem;
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      text-align: center;
+      margin-bottom: 1.8rem;
+      color: var(--neon-green);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: var(--glow-green);
+    }
+
+    /* Needs grid */
+    .needs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .need-card {
+      background: var(--bg-card);
+      border: 1px solid transparent;
+      border-radius: 16px;
+      padding: 1.4rem 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.7rem;
+    }
+
+    .need-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      padding: 1px;
+      background: linear-gradient(135deg, var(--neon-green), var(--neon-pink));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.4;
+      transition: opacity 0.3s;
+    }
+
+    .need-card:hover {
+      transform: translateY(-6px);
+      background: var(--bg-surface);
+      box-shadow: 0 10px 40px rgba(57, 255, 20, 0.15), 0 0 20px rgba(255, 46, 154, 0.1);
+    }
+
+    .need-card:hover::before {
+      opacity: 1;
+    }
+
+    .need-card.active {
+      background: linear-gradient(145deg, rgba(57, 255, 20, 0.12), rgba(255, 46, 154, 0.12));
+      box-shadow: var(--glow-green);
+    }
+
+    .need-card.active::before {
+      opacity: 1;
+    }
+
+    .need-emoji {
+      font-size: 2.4rem;
+      filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+    }
+
+    .need-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--text-primary);
+    }
+
+    /* Tips panel */
+    .tips-panel {
+      display: none;
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 2rem;
+      border: 1px solid rgba(57, 255, 20, 0.25);
+      box-shadow: 0 0 40px rgba(57, 255, 20, 0.08);
+      animation: fadeIn 0.4s ease;
+    }
+
+    .tips-panel.visible {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tips-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .tips-header .emoji {
+      font-size: 2.2rem;
+    }
+
+    .tips-header h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.4rem;
+      background: linear-gradient(90deg, var(--neon-green), var(--neon-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .tips-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .tip-item {
+      background: var(--bg-surface);
+      border-radius: 12px;
+      padding: 1.1rem 1.3rem;
+      border-left: 3px solid var(--neon-green);
+      transition: all 0.25s;
+      position: relative;
+    }
+
+    .tip-item:nth-child(even) {
+      border-left-color: var(--neon-pink);
+    }
+
+    .tip-item:hover {
+      transform: translateX(6px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .tip-item strong {
+      color: var(--neon-cyan);
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.3rem;
+      font-size: 1.05rem;
+    }
+
+    .tip-item p {
+      color: var(--text-secondary);
+      font-size: 0.98rem;
+      line-height: 1.5;
+    }
+
+    .close-btn {
+      margin-top: 1.8rem;
+      display: block;
+      width: 100%;
+      max-width: 220px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0.8rem 1.5rem;
+      background: transparent;
+      border: 1px solid var(--neon-pink);
+      color: var(--neon-pink);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s;
+      letter-spacing: 1px;
+    }
+
+    .close-btn:hover {
+      background: var(--neon-pink);
+      color: #000;
+      box-shadow: var(--glow-pink);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    footer span {
+      color: var(--neon-green);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .needs-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.9rem;
+      }
+      .need-card {
+        padding: 1.1rem 0.8rem;
+      }
+      .need-emoji {
+        font-size: 1.9rem;
+      }
+      .need-title {
+        font-size: 0.8rem;
+      }
+      .tips-panel {
+        padding: 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">DICAS NEON</div>
+    <p class="tagline">Orientações práticas com estilo cyberpunk</p>
+  </header>
+
+  <main>
+    <h2 class="section-title">Escolha sua necessidade</h2>
+    
+    <div class="needs-grid" id="needsGrid">
+      <!-- Cards gerados via JS -->
+    </div>
+
+    <div class="tips-panel" id="tipsPanel">
+      <div class="tips-header">
+        <span class="emoji" id="tipsEmoji"></span>
+        <h2 id="tipsTitle"></h2>
+      </div>
+      <ul class="tips-list" id="tipsList"></ul>
+      <button class="close-btn" onclick="closeTips()">← Voltar</button>
+    </div>
+  </main>
+
+  <footer>
+    Feito com <span>♥</span> para GitHub Pages • Neon Green + Pink Vibes
+  </footer>
+
+  <script>
+    const needs = [
+      {
+        id: 'investimento',
+        emoji: '📈',
+        title: 'Dicas de Investimento',
+        tips: [
+          { title: 'Comece pela Reserva de Emergência', text: 'Antes de qualquer investimento, monte uma reserva de 3 a 6 meses de despesas em um CDB ou Tesouro Selic. Segurança em primeiro lugar.' },
+          { title: 'Diversifique sempre', text: 'Não coloque todo o dinheiro em um único ativo. Combine renda fixa (Tesouro, CDBs) com uma parte em fundos ou ações de empresas sólidas.' },
+          { title: 'Entenda o seu perfil', text: 'Conservador, moderado ou arrojado? Seu perfil define quanto de risco você pode assumir sem perder o sono.' },
+          { title: 'Invista regularmente', text: 'Aportes mensais (mesmo pequenos) vencem a volatilidade no longo prazo. Use o poder dos juros compostos a seu favor.' },
+          { title: 'Cuidado com promessas milagrosas', text: 'Se alguém garante retorno alto e “sem risco”, fuja. Rendimentos acima da média sempre carregam mais risco.' },
+          { title: 'Estude o básico de impostos', text: 'IR sobre renda fixa, comes-e-bebes em fundos e isenção de ações (até o limite mensal) fazem diferença no resultado final.' }
+        ]
+      },
+      {
+        id: 'gestante',
+        emoji: '🤰',
+        title: 'Dicas para Gestantes',
+        tips: [
+          { title: 'Pré-natal é prioritário', text: 'Faça todas as consultas e exames no prazo. Eles detectam problemas cedo e garantem tranquilidade para você e o bebê.' },
+          { title: 'Alimentação equilibrada', text: 'Priorize proteínas, ferro, ácido fólico, cálcio e ômega-3. Evite ultraprocessados, excesso de cafeína e peixes com alto teor de mercúrio.' },
+          { title: 'Hidratação constante', text: 'Beba água ao longo do dia. A hidratação ajuda a evitar infecções urinárias e mantém o líquido amniótico em níveis adequados.' },
+          { title: 'Movimente-se com segurança', text: 'Caminhadas leves e exercícios prescritos pelo obstetra melhoram circulação, humor e preparo para o parto.' },
+          { title: 'Prepare o enxoval com calma', text: 'Comece pelos itens essenciais (fraldas, bodies, cobertores, kit de higiene). Evite comprar tudo de uma vez para não sobrecarregar.' },
+          { title: 'Cuide da saúde mental', text: 'Converse sobre medos e ansiedades. Apoio do parceiro, família ou grupos de gestantes faz muita diferença.' }
+        ]
+      },
+      {
+        id: 'cozinhar',
+        emoji: '🍳',
+        title: 'Aprender a Cozinhar',
+        tips: [
+          { title: 'Domine os temperos básicos', text: 'Sal, pimenta, alho, cebola, azeite e limão resolvem 80% dos pratos. Aprenda a equilibrar salgado, ácido e umami.' },
+          { title: 'Técnica do “mise en place”', text: 'Separe e corte todos os ingredientes antes de ligar o fogo. Cozinhar fica mais rápido, organizado e menos estressante.' },
+          { title: 'Controle o fogo', text: 'Fogo alto para selar, médio para cozinhar e baixo para finalizar. A maioria dos erros acontece por pressa no fogo.' },
+          { title: 'Comece com receitas simples', text: 'Arroz soltinho, ovo perfeito, frango grelhado e uma salada bem temperada já formam um prato completo e delicioso.' },
+          { title: 'Use o tempo a seu favor', text: 'Deixe carnes marinando, legumes assando e molhos reduzindo enquanto prepara o resto. Multitarefa inteligente.' },
+          { title: 'Prove sempre', text: 'Prove o prato em diferentes etapas. O tempero final só fica certo se você ajusta enquanto cozinha.' }
+        ]
+      },
+      {
+        id: 'academia',
+        emoji: '💪',
+        title: 'Dicas de Academia',
+        tips: [
+          { title: 'Progressão de carga', text: 'Aumente peso, repetições ou séries de forma gradual. O estímulo progressivo é o que gera hipertrofia real.' },
+          { title: 'Foque na execução', text: 'Melhor fazer 8 repetições perfeitas do que 12 com postura errada. Lesões atrasam meses de evolução.' },
+          { title: 'Recuperação importa', text: 'Durma bem e respeite o descanso entre treinos do mesmo grupo muscular. O músculo cresce fora da academia.' },
+          { title: 'Proteína suficiente', text: 'Consuma cerca de 1,6 a 2,2 g de proteína por kg de peso corporal para otimizar a construção muscular.' },
+          { title: 'Consistência > intensidade isolada', text: 'Treinar 4 vezes por semana de forma constante bate treinos “heroicos” esporádicos.' }
+        ]
+      },
+      {
+        id: 'posparto',
+        emoji: '🍼',
+        title: 'Pós-Parto & Amamentação',
+        tips: [
+          { title: 'Pega correta é fundamental', text: 'Boca bem aberta, lábio inferior virado para fora e queixo tocando o seio. Evita rachaduras e garante esvaziamento.' },
+          { title: 'Amamente em livre demanda', text: 'Nos primeiros meses, ofereça o peito sempre que o bebê quiser. Isso regula a produção de leite.' },
+          { title: 'Cuide da sua recuperação', text: 'Descanse sempre que o bebê dormir. Peça ajuda com tarefas domésticas e aceite apoio sem culpa.' },
+          { title: 'Alívio de desconfortos', text: 'Compressas mornas antes e frias depois da mamada ajudam em engorgitamento. Hidrate-se e alimente-se bem.' },
+          { title: 'Sinais de alerta', text: 'Febre, dor intensa no seio, vermelhidão ou secreção purulenta merecem avaliação médica rápida.' }
+        ]
+      },
+      {
+        id: 'recem-nascido',
+        emoji: '👶',
+        title: 'Cuidados com Recém-Nascido',
+        tips: [
+          { title: 'Sono seguro', text: 'Coloque o bebê de barriga para cima, em superfície firme, sem travesseiros, cobertores soltos ou bichos de pelúcia.' },
+          { title: 'Banho com calma', text: 'Água morna, ambiente aquecido, movimentos suaves. Nos primeiros dias o banho de imersão pode ser curto e cuidadoso.' },
+          { title: 'Rotina flexível', text: 'Recém-nascidos ainda não têm horário fixo. Observe os sinais de fome, sono e desconforto em vez de forçar relógio.' },
+          { title: 'Contato pele a pele', text: 'Ajuda na regulação da temperatura, batimentos cardíacos e no vínculo. Excelente também para a amamentação.' },
+          { title: 'Higiene do coto umbilical', text: 'Mantenha limpo e seco conforme orientação do pediatra até cair naturalmente.' }
+        ]
+      },
+      {
+        id: 'produtividade',
+        emoji: '📈',
+        title: 'Produtividade & Carreira',
+        tips: [
+          { title: 'Regra dos 2 minutos', text: 'Se uma tarefa leva menos de 2 minutos, faça agora. Evita acúmulo de pequenas pendências.' },
+          { title: 'Blocos de foco', text: 'Trabalhe em blocos de 45–90 minutos sem interrupção. Depois faça uma pausa real.' },
+          { title: 'Priorize o que move a agulha', text: 'Identifique as 1–3 tarefas que realmente avançam sua carreira ou projeto e faça-as primeiro.' },
+          { title: 'Documente conquistas', text: 'Mantenha um registro simples de resultados. Ajuda em feedbacks, promoções e autoavaliação.' },
+          { title: 'Aprenda em público', text: 'Compartilhe o que está estudando. Ensina você a estruturar o conhecimento e gera oportunidades.' }
+        ]
+      },
+      {
+        id: 'mentalidade',
+        emoji: '🧠',
+        title: 'Mentalidade & Foco',
+        tips: [
+          { title: 'Ambiente > força de vontade', text: 'Remova distrações do ambiente. Celular longe, notificações desligadas e espaço limpo aumentam o foco automaticamente.' },
+          { title: 'Comece pequeno', text: 'Hábitos de 2 minutos são mais fáceis de manter. A consistência cria identidade (“eu sou alguém que faz”).' },
+          { title: 'Revise suas metas semanalmente', text: 'Uma revisão rápida de 10 minutos no domingo alinha a semana e evita deriva.' },
+          { title: 'Proteja o sono', text: 'Sem sono de qualidade, foco e humor despencam. Trate o descanso como parte do trabalho, não como recompensa.' },
+          { title: 'Aceite o desconforto inicial', text: 'Todo progresso importante começa desconfortável. O cérebro resiste, mas a ação cria o caminho.' }
+        ]
+      }
+    ];
+
+    // Render cards
+    const grid = document.getElementById('needsGrid');
+    needs.forEach(need => {
+      const card = document.createElement('div');
+      card.className = 'need-card';
+      card.dataset.id = need.id;
+      card.innerHTML = `
+        <div class="need-emoji">${need.emoji}</div>
+        <div class="need-title">${need.title}</div>
+      `;
+      card.addEventListener('click', () => showTips(need.id));
+      grid.appendChild(card);
+    });
+
+    function showTips(id) {
+      const need = needs.find(n => n.id === id);
+      if (!need) return;
+
+      // Highlight active card
+      document.querySelectorAll('.need-card').forEach(c => c.classList.remove('active'));
+      document.querySelector(`.need-card[data-id="${id}"]`).classList.add('active');
+
+      // Fill panel
+      document.getElementById('tipsEmoji').textContent = need.emoji;
+      document.getElementById('tipsTitle').textContent = need.title;
+      
+      const list = document.getElementById('tipsList');
+      list.innerHTML = need.tips.map(t => `
+        <li class="tip-item">
+          <strong>${t.title}</strong>
+          <p>${t.text}</p>
+        </li>
+      `).join('');
+
+      document.getElementById('tipsPanel').classList.add('visible');
+      
+      // Scroll suave até o painel
+      document.getElementById('tipsPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function closeTips() {
+      document.getElementById('tipsPanel').classList.remove('visible');
+      document.querySelectorAll('.need-card').forEach(c => c.classList.remove('active'));
+    }
+  </script>
+</body>
+</html>
